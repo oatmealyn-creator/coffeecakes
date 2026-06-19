@@ -11,7 +11,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     if (targetElement) {
       const nav = document.querySelector('nav');
       const navHeight = nav ? nav.offsetHeight : 0;
-      const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight - 15;
+      const scrollTarget = targetId === '#menu'
+        ? targetElement.querySelector('.menu-header-block') ?? targetElement
+        : targetElement;
+      const targetPosition = scrollTarget.getBoundingClientRect().top + window.pageYOffset - navHeight - 15;
 
       if (supportsNativeSmoothScroll) {
         window.scrollTo({ top: targetPosition, behavior: 'smooth' });
@@ -22,135 +25,76 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-function isAnimAPISupported() {
-  return typeof document.body.animate === 'function';
-}
-
 const heroLogo = document.querySelector('.brand-logo-main');
-
-function sparkleBurst(x, y) {
-  if (prefersReduced) return;
-  if (!isAnimAPISupported()) return;
-  const colors = ['#D4AF37', '#F4E8C1', '#FFF', '#D4AF37', '#C39B2D'];
-  for (let i = 0; i < 8; i++) {
-    const dot = document.createElement('div');
-    dot.className = 'sparkle';
-    const size = 4 + Math.random() * 6;
-    const angle = Math.random() * Math.PI * 2;
-    const dist = 40 + Math.random() * 60;
-    dot.style.cssText = `left:${x}px;top:${y}px;width:${size}px;height:${size}px;background:${colors[i % colors.length]};--dx:${Math.cos(angle)*dist}px;--dy:${Math.sin(angle)*dist}px;`;
-    document.body.appendChild(dot);
-    dot.animate([
-      { transform: 'translate(0,0) scale(1)', opacity: 1 },
-      { transform: `translate(${Math.cos(angle)*dist}px,${Math.sin(angle)*dist}px) scale(0)`, opacity: 0 }
-    ], { duration: 600, easing: 'ease-out' }).onfinish = () => dot.remove();
-  }
-}
+let animating = false;
+let activeClone = null;
 
 function triggerEasterEgg() {
-  if (!heroLogo || animating || prefersReduced || !isAnimAPISupported()) return;
+  if (!heroLogo || animating) return;
   animating = true;
-  clearTimeout(autoResetTimer);
+  heroLogo.classList.remove('logo-easter-hint');
+  heroLogo.classList.add('logo-launching');
 
-  heroLogo.classList.add('logo-squished');
+  const clone = document.createElement('img');
+  clone.src = heroLogo.currentSrc || heroLogo.src;
+  clone.alt = 'Coffee Cakes logo — tap to return to the top';
+  clone.width = 1176;
+  clone.height = 896;
+  clone.className = 'falling-logo-clone logo-falling';
+  clone.tabIndex = 0;
+  clone.setAttribute('role', 'button');
+  document.body.appendChild(clone);
+  activeClone = clone;
 
-  setTimeout(() => {
-    heroLogo.classList.remove('logo-squished');
-    heroLogo.classList.add('logo-shot-up');
-    const r = heroLogo.getBoundingClientRect();
-    sparkleBurst(r.left + r.width/2, r.top + r.height/2);
+  clone.addEventListener('animationend', (event) => {
+    if (event.animationName !== 'logoFall' && event.animationName !== 'logoFallReduced') return;
+    clone.classList.remove('logo-falling');
+    clone.classList.add('logo-landed');
+  });
+
+  const restoreLogo = () => {
+    if (clone !== activeClone || clone.classList.contains('logo-restoring')) return;
+    clone.classList.remove('logo-falling', 'logo-landed');
+    clone.classList.add('logo-restoring');
+
+    if (prefersReduced) {
+      window.scrollTo({ top: 0 });
+    } else {
+      const startY = window.scrollY;
+      const startTime = performance.now();
+      const scrollDuration = 850;
+
+      const pullPageUp = (currentTime) => {
+        const progress = Math.min((currentTime - startTime) / scrollDuration, 1);
+        const easedProgress = 1 - Math.pow(1 - progress, 3);
+        window.scrollTo({ top: startY * (1 - easedProgress) });
+        if (progress < 1) requestAnimationFrame(pullPageUp);
+      };
+
+      requestAnimationFrame(pullPageUp);
+    }
 
     setTimeout(() => {
-      const vh = window.innerHeight;
-      const cloneSize = window.innerWidth < 600 ? 140 : 200;
-      const landY = vh - cloneSize - 40;
+      clone.remove();
+      activeClone = null;
+      heroLogo.classList.remove('logo-launching');
+      heroLogo.classList.add('logo-returning');
 
-      const clone = document.createElement('img');
-      clone.src = heroLogo.src;
-      clone.alt = 'Falling logo animation';
-      clone.className = 'falling-logo-clone';
-      clone.style.width = cloneSize + 'px';
-      document.body.appendChild(clone);
+      setTimeout(() => {
+        heroLogo.classList.remove('logo-returning');
+        animating = false;
+      }, prefersReduced ? 300 : 500);
+    }, prefersReduced ? 300 : 900);
+  };
 
-      const fallAnim = clone.animate([
-        { top: '-150px', transform: 'translateX(-50%) rotate(0deg)' },
-        { top: (vh * 0.35) + 'px', transform: 'translateX(-50%) rotate(1080deg)', offset: 0.3 },
-        { top: (vh * 0.65) + 'px', transform: 'translateX(-50%) rotate(2160deg)', offset: 0.55 },
-        { top: landY + 'px', transform: 'translateX(-50%) rotate(3240deg)', offset: 1 }
-      ], {
-        duration: 2800,
-        easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
-        fill: 'forwards'
-      });
-
-      let scrollWobbleTimer = null;
-      const onScroll = () => {
-        if (!clone.isConnected) {
-          window.removeEventListener('scroll', onScroll);
-          return;
-        }
-        if (prefersReduced) return;
-        clone.classList.remove('clone-idle');
-        clone.classList.add('clone-scroll');
-        clearTimeout(scrollWobbleTimer);
-        scrollWobbleTimer = setTimeout(() => {
-          clone.classList.remove('clone-scroll');
-          if (clone.isConnected) clone.classList.add('clone-idle');
-        }, 500);
-      };
-
-      fallAnim.onfinish = () => {
-        fallAnim.cancel();
-        clone.style.top = landY + 'px';
-        clone.style.transform = 'translateX(-50%)';
-        if (!prefersReduced) clone.classList.add('clone-idle');
-        window.addEventListener('scroll', onScroll, { passive: true });
-        autoResetTimer = setTimeout(() => { animating = false; }, 30000);
-      };
-
-      const restoreAction = () => {
-        if (!clone.isConnected) return;
-        animating = true;
-        clearTimeout(autoResetTimer);
-        fallAnim.cancel();
-        window.removeEventListener('scroll', onScroll);
-        clone.classList.remove('clone-idle', 'clone-scroll');
-
-        clone.style.top = landY + 'px';
-        clone.style.transform = 'translateX(-50%) rotate(3240deg) scale(1)';
-
-        clone.animate([
-          { top: landY + 'px', transform: 'translateX(-50%) rotate(3240deg) scale(1)' },
-          { top: (landY + 30) + 'px', transform: 'translateX(-50%) rotate(3240deg) scaleY(0.7) scaleX(1.3)', offset: 0.12 },
-          { top: '-200vh', transform: 'translateX(-50%) rotate(3600deg)', offset: 0.35 },
-          { top: '-200vh', transform: 'translateX(-50%) rotate(3600deg)', offset: 1 }
-        ], {
-          duration: 1000,
-          easing: 'cubic-bezier(0.6, -0.28, 0.735, 0.045)',
-          fill: 'forwards'
-        });
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-
-        setTimeout(() => {
-          clone.remove();
-          heroLogo.classList.remove('logo-shot-up');
-          heroLogo.classList.add('logo-land-bounce');
-          setTimeout(() => {
-            heroLogo.classList.remove('logo-land-bounce');
-            animating = false;
-          }, 800);
-        }, 1100);
-      };
-
-      clone.addEventListener('click', restoreAction);
-
-    }, 250);
-  }, 80);
+  clone.addEventListener('click', restoreLogo);
+  clone.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      restoreLogo();
+    }
+  });
 }
-
-let animating = false;
-let autoResetTimer = null;
 
 if (heroLogo) {
   heroLogo.addEventListener('click', triggerEasterEgg);
@@ -163,7 +107,7 @@ if (heroLogo) {
 }
 
 setTimeout(() => {
-  if (heroLogo && !heroLogo.classList.contains('logo-shot-up') && !prefersReduced) {
+  if (heroLogo && !animating && !prefersReduced) {
     const heroSection = document.getElementById('home');
     if (!heroSection) return;
     const rect = heroSection.getBoundingClientRect();
