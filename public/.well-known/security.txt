@@ -1,0 +1,28 @@
+# Security Policy for Coffee Cakes
+# https://coffecakes.pages.dev
+
+# Our security.txt follows RFC 9116
+
+# Contact information for security concerns
+Contact: mailto:security@coffecakes.pages.dev
+
+# Optional: PGP key fingerprint for encrypted communication
+# You can add your PGP key here if you have one
+
+# Security policy URL
+Policy: https://coffecakes.pages.dev/.well-known/security-policy
+
+# Preferred language for reports
+Preferred-Languages: en, ml
+
+# Encryption key for secure communication
+# Encryption: https://coffecakes.pages.dev/.well-known/pgp-key.txt
+
+# Acknowledgments URL
+# Acknowledgments: https://coffecakes.pages.dev/hall-of-fame
+
+# Expiry date (ISO 8601) - this file should be reviewed/updated by this date
+Expires: 2026-12-31T23:59:00.000Z
+
+# Canonical URL for this file
+Canonical: https://coffecakes.pages.dev/.well-known/security.txt

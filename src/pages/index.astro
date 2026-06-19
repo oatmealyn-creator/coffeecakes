@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import MarqueeBanner from '../components/MarqueeBanner.astro';
+import About from '../components/About.astro';
+import MenuBoard from '../components/MenuBoard.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+
+const coffeeItems = [
+  { name: 'Classic Espresso', price: '₹120', desc: 'A bold, pure shot of rich espresso.' },
+  { name: 'Velvety Cappuccino', price: '₹150', desc: 'Balanced double shot espresso with thick steamed milk foam.' },
+  { name: 'Hazelnut Latte', price: '₹180', desc: 'Silky espresso combined with rich hazelnut syrup and warm milk.' },
+  { name: 'Cold Brew Coffee', price: '₹200', desc: 'Slow-steeped 16 hours for a super smooth, chocolatey flavor profile.' },
+];
+
+const cakeItems = [
+  { name: 'Chocolate Truffle', price: '₹250', desc: 'Layers of dark chocolate ganache and moist sponge cake.' },
+  { name: 'Red Velvet Dream', price: '₹280', desc: 'Vibrant red cake layers with rich, whipped vanilla cream cheese.' },
+  { name: 'New York Cheesecake', price: '₹320', desc: 'Traditional dense cream cheese cake on a crunchy graham cracker crust.' },
+  { name: 'Black Forest Classic', price: '₹220', desc: 'Cherry-soaked chocolate cake with layers of fresh cream and chocolate shavings.' },
+];
+
+const savoryItems = [
+  { name: 'Paneer Puff', price: '₹60', desc: 'Crisp, golden layers of puff pastry with a spiced paneer center.' },
+  { name: 'Grilled Club Sandwich', price: '₹140', desc: 'Double-decker toasted sandwich packed with fresh veggies and cheese.' },
+  { name: 'Spicy Samosas (2pc)', price: '₹50', desc: 'Traditional crispy pastry stuffed with deliciously spiced potato peas filling.' },
+  { name: 'Cheese Garlic Bread', price: '₹120', desc: 'Toasted french baguette slices with garlic butter, topped with melted mozzarella.' },
+];
+---
+
+<BaseLayout>
+  <Nav />
+
+  <main id="main-content">
+    <Hero />
+
+    <MarqueeBanner />
+
+    <About />
+
+    <section id="menu" class="menu-section">
+      <div class="menu-header-block">
+        <h2>Our Sweet &amp; Savory Menu</h2>
+        <p style="font-size: 1.2rem; color: #666;">Handcrafted with natural ingredients and freshly brewed on order.</p>
+      </div>
+
+      <div class="menu-grid">
+        <MenuBoard tag="Artisanal" heading="☕️ Coffee Fixes" items={coffeeItems} />
+        <MenuBoard tag="Signature" heading="🍰 Heavenly Slices" items={cakeItems} />
+        <MenuBoard tag="Warm &amp; Crispy" heading="🥐 Savory Bites" items={savoryItems} />
+      </div>
+    </section>
+
+    <Contact />
+  </main>
+
+  <Footer />
+</BaseLayout>

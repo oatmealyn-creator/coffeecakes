@@ -1,0 +1,30 @@
+---
+interface MenuItem {
+  name: string;
+  price: string;
+  desc: string;
+}
+
+interface Props {
+  tag: string;
+  heading: string;
+  items: MenuItem[];
+}
+
+const { tag, heading, items } = Astro.props;
+---
+
+<div class="menu-board">
+  <div class="board-tag">{tag}</div>
+  <h3>{heading}</h3>
+  {items.map((item) => (
+    <div class="menu-list-item">
+      <div class="menu-item-row">
+        <span class="menu-item-name">{item.name}</span>
+        <span class="menu-item-dots"></span>
+        <span class="menu-item-price">{item.price}</span>
+      </div>
+      <span class="menu-item-desc">{item.desc}</span>
+    </div>
+  ))}
+</div>

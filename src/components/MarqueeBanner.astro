@@ -1,0 +1,30 @@
+<div class="marquee-banner" role="marquee" aria-label="Announcements" tabindex="0">
+  <div class="marquee-content">
+    <span>☕️ FRESHLY BREWED ARTISANAL COFFEE</span>
+    <span>🎂 HEAVENLY HOME-MADE CAKES</span>
+    <span>✨ CRAFTED WITH LOVE</span>
+    <span>🥐 DELICIOUS SAVORY BITES</span>
+    <span>☕️ FRESHLY BREWED ARTISANAL COFFEE</span>
+    <span>🎂 HEAVENLY HOME-MADE CAKES</span>
+    <span>✨ CRAFTED WITH LOVE</span>
+    <span>🥐 DELICIOUS SAVORY BITES</span>
+  </div>
+</div>
+<script>
+  const marquee = document.querySelector('.marquee-banner');
+  if (marquee) {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) marquee.classList.add('marquee-paused');
+
+    marquee.addEventListener('mouseenter', () => marquee.classList.add('marquee-paused'));
+    marquee.addEventListener('mouseleave', () => {
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+        marquee.classList.remove('marquee-paused');
+    });
+    marquee.addEventListener('focusin', () => marquee.classList.add('marquee-paused'));
+    marquee.addEventListener('focusout', () => {
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+        marquee.classList.remove('marquee-paused');
+    });
+  }
+</script>

@@ -1,0 +1,103 @@
+---
+import { CANONICAL_URL, OG_IMAGE_DEFAULT, SITE_NAME, PHONE, EMAIL } from '../data/constants';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title = `${SITE_NAME} | Kattakada's Favorite Cafe & Bakery`,
+  description = "Step into Kattakada's favorite hangout! Enjoy freshly brewed specialty coffee, heavenly handcrafted cakes, and warm cozy vibes at Coffee Cakes on Thiruvananthapuram - Neyyar Dam Road.",
+  ogImage = OG_IMAGE_DEFAULT,
+} = Astro.props;
+
+const canonicalURL = CANONICAL_URL;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="generator" content="Coffee Cakes" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Fredoka:wght@400;500;600;700&family=Outfit:wght@300;400;600;800&family=Pacifico&display=swap" rel="stylesheet" crossorigin="anonymous" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={`${canonicalURL}${ogImage}`} />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:site_name" content="Coffee Cakes" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={`${canonicalURL}${ogImage}`} />
+
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#4B3621" />
+
+  <!-- Search Console verification — uncomment and set your codes -->
+  <!-- <meta name="google-site-verification" content="YOUR_CODE" /> -->
+  <!-- <meta name="msvalidate.01" content="YOUR_CODE" /> -->
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "CafeOrCoffeeShop",
+    "name": SITE_NAME,
+    "description": description,
+    "url": canonicalURL,
+    "telephone": PHONE,
+    "email": EMAIL,
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Thiruvananthapuram - Neyyar Dam Road, Kattakada",
+      "addressLocality": "Trivandrum",
+      "addressRegion": "Kerala",
+      "addressCountry": "IN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 8.6043959,
+      "longitude": 76.9982854
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "opens": "09:00",
+        "closes": "22:00"
+      }
+    ],
+    "servesCuisine": ["Coffee", "Bakery", "Desserts", "Savory"],
+    "priceRange": "\u20B9",
+    "image": `${canonicalURL}${ogImage}`
+  })} />
+</head>
+<body>
+  <a href="#main-content" class="skip-link" style="position:absolute;top:-9999px;left:0;z-index:10000;background:var(--accent);color:var(--dark);padding:10px 20px;font-family:'Fredoka',sans-serif;font-weight:700;text-decoration:none;">
+    Skip to main content
+  </a>
+
+  <slot />
+
+  <!-- Global Script -->
+  <script src="/src/scripts/main.js"></script>
+</body>
+</html>
