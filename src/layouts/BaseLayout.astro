@@ -9,7 +9,7 @@ interface Props {
 }
 
 const {
-  title = `${SITE_NAME} | Kattakada's Favorite Cafe & Bakery`,
+  title = 'CoffeeCakes',
   description = "Step into Kattakada's favorite hangout! Enjoy freshly brewed specialty coffee, heavenly handcrafted cakes, and warm cozy vibes at Coffee Cakes on Thiruvananthapuram - Neyyar Dam Road.",
   ogImage = OG_IMAGE_DEFAULT,
 } = Astro.props;
@@ -25,8 +25,8 @@ const canonicalURL = CANONICAL_URL;
   <meta name="generator" content="Coffee Cakes" />
   <title>{title}</title>
   <meta name="description" content={description} />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="icon" href="/favicon.ico" />
+  <link rel="icon" type="image/webp" href="/images/logo.webp" />
+  <link rel="apple-touch-icon" href="/images/logo.webp" />
   <link rel="canonical" href={canonicalURL} />
 
   <!-- Google Fonts -->
