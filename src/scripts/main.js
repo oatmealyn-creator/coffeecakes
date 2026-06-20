@@ -1,6 +1,48 @@
 const supportsNativeSmoothScroll = CSS.supports('scroll-behavior', 'smooth');
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+const pageFooter = document.querySelector('footer');
+
+if (pageFooter && 'IntersectionObserver' in window) {
+  const footerObserver = new IntersectionObserver(([entry]) => {
+    document.documentElement.classList.toggle('at-page-end', entry.isIntersecting);
+  });
+
+  footerObserver.observe(pageFooter);
+}
+
+const revealTargets = [
+  '.scrapbook-gallery',
+  '.about-text-block',
+  '.menu-header-block',
+  '.menu-board',
+  '.blackboard',
+  '.map-frame',
+  'footer > *',
+];
+
+if (!prefersReduced && 'IntersectionObserver' in window) {
+  const elementsToReveal = document.querySelectorAll(revealTargets.join(','));
+
+  elementsToReveal.forEach((element, index) => {
+    element.classList.add('reveal-on-scroll');
+    element.style.setProperty('--reveal-delay', `${(index % 3) * 90}ms`);
+  });
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      revealObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.14,
+    rootMargin: '0px 0px -7% 0px',
+  });
+
+  elementsToReveal.forEach((element) => revealObserver.observe(element));
+}
+
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
     e.preventDefault();

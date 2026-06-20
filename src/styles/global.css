@@ -12,8 +12,10 @@
 html {
   background-color: var(--bg-paper);
   overscroll-behavior-y: none;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
+}
+
+html.at-page-end {
+  background-color: var(--dark);
 }
 
 * {
@@ -26,25 +28,13 @@ body {
   font-family: 'Outfit', sans-serif;
   min-height: 100vh;
   min-height: 100dvh;
-  overscroll-behavior-y: none;
   background-color: var(--bg-paper);
   color: var(--dark);
   line-height: 1.6;
-  overflow-x: clip;
-}
-
-img,
-svg,
-iframe {
-  max-width: 100%;
-}
-
-main,
-section,
-.hero-container,
-.contact-container,
-.menu-grid {
-  min-width: 0;
+  background-image:
+    linear-gradient(rgba(30, 26, 23, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 26, 23, 0.05) 1px, transparent 1px);
+  background-size: 30px 30px;
 }
 
 h1, h2, h3 {
@@ -114,7 +104,7 @@ nav {
 
 .brand-name {
   font-family: 'Pacifico', cursive;
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-size: 2.2rem;
   letter-spacing: 0px;
   display: inline-block;
   filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.15));
@@ -180,6 +170,7 @@ nav {
   padding: 120px 5% 80px 5%;
   position: relative;
   background-color: #F3F1ED;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cpath d='M10,20 Q20,10 30,20 T50,20' stroke='%23d1cdc8' fill='none' stroke-width='2'/%3E%3Cpath d='M80,30 C90,40 100,20 110,35' stroke='%23d1cdc8' fill='none' stroke-width='1.5'/%3E%3Ccircle cx='140' cy='40' r='6' stroke='%23d1cdc8' fill='none' stroke-width='1.5'/%3E%3Cpath d='M20,100 C30,110 25,130 40,120' stroke='%23d1cdc8' fill='none' stroke-width='1.5'/%3E%3Cpath d='M70,90 Q85,110 100,90' stroke='%23d1cdc8' fill='none' stroke-width='2'/%3E%3Ccircle cx='130' cy='110' r='4' stroke='%23d1cdc8' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");
   border-bottom: 5px solid var(--dark);
 }
 
@@ -212,30 +203,6 @@ nav {
   width: 120px;
   height: 120px;
   animation: float 7s infinite ease-in-out 2s;
-}
-
-.doodle-4 {
-  bottom: 8%;
-  left: 7%;
-  width: 92px;
-  height: 92px;
-  transform: rotate(-11deg);
-}
-
-.doodle-5 {
-  top: 48%;
-  left: 48%;
-  width: 78px;
-  height: 78px;
-  transform: rotate(8deg);
-}
-
-.doodle-6 {
-  bottom: 5%;
-  right: 27%;
-  width: 86px;
-  height: 86px;
-  transform: rotate(-7deg);
 }
 
 .hero-container {
@@ -275,7 +242,7 @@ nav {
 }
 
 .hero-title {
-  font-size: clamp(2.3rem, 5vw, 4rem);
+  font-size: 4rem;
   line-height: 1.1;
   margin-bottom: 1.5rem;
   color: var(--primary);
@@ -452,7 +419,7 @@ nav {
 }
 
 .about-text-block h2 {
-  font-size: clamp(2.4rem, 4.5vw, 3.5rem);
+  font-size: 3.5rem;
   margin-bottom: 2rem;
   line-height: 1.1;
 }
@@ -477,14 +444,14 @@ nav {
 }
 
 .menu-header-block h2 {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: 4rem;
   margin-bottom: 1rem;
   text-shadow: 2px 2px 0 var(--accent);
 }
 
 .menu-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 40px;
   max-width: 1200px;
   margin: 0 auto;
@@ -544,8 +511,6 @@ nav {
   font-size: 1.3rem;
   font-weight: 700;
   color: var(--dark);
-  min-width: 0;
-  overflow-wrap: anywhere;
 }
 
 .menu-item-dots {
@@ -559,7 +524,6 @@ nav {
   font-weight: 800;
   color: var(--primary);
   font-family: 'Fredoka', sans-serif;
-  flex-shrink: 0;
 }
 
 .menu-item-desc {
@@ -647,7 +611,6 @@ footer {
   text-align: center;
   font-family: 'Fredoka', sans-serif;
   border-top: 3px solid var(--accent);
-  padding-bottom: max(3rem, env(safe-area-inset-bottom));
 }
 
 .skip-link:focus {
@@ -695,15 +658,15 @@ footer {
   }
 
   nav {
-    animation: navEntrance 0.65s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    animation: navEntrance 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .hero-creative-card {
-    animation: heroCardEntrance 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.12s backwards;
+    animation: heroCardEntrance 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
   }
 
   .hero-brand-frame {
-    animation: heroLogoEntrance 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.28s backwards;
+    animation: heroLogoEntrance 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.28s both;
   }
 
   @keyframes float {
@@ -805,6 +768,19 @@ footer {
     animation: logoReturn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
+}
+
+.reveal-on-scroll {
+  opacity: 0;
+  translate: 0 28px;
+  transition:
+    opacity 0.7s ease var(--reveal-delay, 0ms),
+    translate 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  translate: 0 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1020,7 +996,7 @@ footer {
 
 @media (max-width: 600px) {
   nav {
-    padding: 0.5rem max(4%, env(safe-area-inset-right)) 0.5rem max(4%, env(safe-area-inset-left));
+    padding: 0.5rem 4%;
   }
   .brand-name {
     font-size: 1.6rem;
@@ -1031,101 +1007,7 @@ footer {
   .nav-links {
     display: none;
   }
-  .brand-name {
-    filter: none;
-  }
   .hero-title {
     font-size: 2.3rem;
-  }
-  .hero-wall {
-    padding-inline: 1rem;
-  }
-  .hero-creative-card {
-    padding-inline: 1rem;
-  }
-  .about-section,
-  .menu-section,
-  .contact-section {
-    padding-inline: 1rem;
-  }
-  .menu-board {
-    padding: 1.75rem 1rem;
-  }
-  .menu-item-row {
-    gap: 0.4rem;
-  }
-  .menu-item-name {
-    font-size: 1.1rem;
-  }
-  .menu-item-price {
-    font-size: 1.2rem;
-  }
-  .menu-item-desc {
-    font-size: 0.9rem;
-  }
-  .blackboard {
-    border-width: 6px;
-    padding-inline: 1rem;
-  }
-  footer {
-    padding-inline: 1rem;
-  }
-}
-
-@media (max-width: 380px) {
-  .logo-block {
-    gap: 0.4rem;
-  }
-  .logo-block img {
-    height: 38px;
-  }
-  .brand-name {
-    font-size: 1.3rem;
-  }
-  .hero-creative-card::before {
-    left: 1rem;
-    font-size: 0.75rem;
-  }
-  .scrapbook-gallery {
-    height: 300px;
-  }
-  .polaroid {
-    width: 175px;
-  }
-  .polaroid img {
-    height: 120px;
-  }
-  .map-frame {
-    height: 280px;
-  }
-}
-
-@media (max-width: 600px) and (prefers-reduced-motion: no-preference) {
-  @keyframes mobileFloat {
-    0%, 100% { transform: translate3d(0, 0, 0); }
-    50% { transform: translate3d(0, -6px, 0); }
-  }
-
-  .doodle-2,
-  .doodle-4,
-  .doodle-6 {
-    animation: none;
-  }
-
-  .doodle-1,
-  .doodle-3,
-  .doodle-5 {
-    animation: mobileFloat 9s ease-in-out infinite;
-    backface-visibility: hidden;
-  }
-
-  .brand-logo-main {
-    animation: mobileFloat 7s ease-in-out infinite;
-    backface-visibility: hidden;
-  }
-
-  .marquee-content {
-    animation: marquee 32s linear infinite;
-    backface-visibility: hidden;
   }
 }
