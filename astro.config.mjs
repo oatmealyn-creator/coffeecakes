@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://coffecakes.pages.dev',
+  site: 'https://coffeecakes.pages.dev',
   output: 'static',
   integrations: [sitemap()],
   image: {
