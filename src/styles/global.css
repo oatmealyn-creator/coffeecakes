@@ -9,6 +9,15 @@
   --sketch-shadow: 6px 6px 0px var(--dark);
 }
 
+html {
+  background-color: var(--bg-paper);
+  overscroll-behavior-y: none;
+}
+
+html.at-page-end {
+  background-color: var(--dark);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -17,6 +26,8 @@
 
 body {
   font-family: 'Outfit', sans-serif;
+  min-height: 100vh;
+  min-height: 100dvh;
   background-color: var(--bg-paper);
   color: var(--dark);
   line-height: 1.6;
@@ -578,6 +589,12 @@ nav {
   box-shadow: var(--sketch-shadow);
   height: 450px;
   position: relative;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+}
+
+.map-frame:hover {
+  transform: translateY(-4px);
+  box-shadow: 10px 12px 0 var(--dark);
 }
 
 .map-frame iframe {
@@ -625,6 +642,33 @@ footer {
 
 /* Keyframe Animations */
 @media (prefers-reduced-motion: no-preference) {
+  @keyframes navEntrance {
+    from { opacity: 0; transform: translateY(-100%); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes heroCardEntrance {
+    from { opacity: 0; transform: translateY(28px) rotate(-1deg) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) rotate(-1deg) scale(1); }
+  }
+
+  @keyframes heroLogoEntrance {
+    from { opacity: 0; transform: translateY(28px) scale(0.92); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  nav {
+    animation: navEntrance 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .hero-creative-card {
+    animation: heroCardEntrance 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+  }
+
+  .hero-brand-frame {
+    animation: heroLogoEntrance 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.28s both;
+  }
+
   @keyframes float {
     0%, 100% { transform: translateY(0px) rotate(0deg); }
     50% { transform: translateY(-12px) rotate(2deg); }
@@ -726,6 +770,19 @@ footer {
 
 }
 
+.reveal-on-scroll {
+  opacity: 0;
+  translate: 0 28px;
+  transition:
+    opacity 0.7s ease var(--reveal-delay, 0ms),
+    translate 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  translate: 0 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   @keyframes logoFallReduced {
     from { transform: translate3d(-50%, -30vh, 0); opacity: 0; }
@@ -750,6 +807,10 @@ footer {
   }
 
   .menu-board:hover {
+    transform: none;
+  }
+
+  .map-frame:hover {
     transform: none;
   }
 
